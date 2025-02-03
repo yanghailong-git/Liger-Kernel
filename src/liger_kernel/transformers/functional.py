@@ -8,6 +8,7 @@ from liger_kernel.ops.group_norm import LigerGroupNormFunction
 from liger_kernel.ops.jsd import LigerJSDFunction
 from liger_kernel.ops.kl_div import LigerKLDivLossFunction
 from liger_kernel.ops.layer_norm import LigerLayerNormFunction
+from liger_kernel.ops.batch_norm import LigerBatchNormFunction
 from liger_kernel.ops.qwen2vl_mrope import LigerQwen2VLMRopeFunction
 from liger_kernel.ops.rms_norm import LigerRMSNormFunction
 from liger_kernel.ops.rope import LigerRopeFunction
@@ -160,6 +161,27 @@ def liger_kl_div(
 def liger_layer_norm(X, W, B, eps):
     return LigerLayerNormFunction.apply(X, W, B, eps)
 
+def liger_batch_norm(
+    input,
+    weight=None,
+    bias=None,
+    running_mean=None,
+    running_var=None,
+    training=False,
+    momentum=0.1,
+    eps=1e-05,
+    cudnn_enable=True,
+):
+    return LigerBatchNormFunction.apply(
+        input,
+        weight,
+        bias,
+        running_mean,
+        running_var,
+        training,
+        momentum,
+        eps,
+        cudnn_enable)
 
 def liger_qwen2vl_mrope(q, k, cos, sin, mrope_section, unsqueeze_dim=1):
     return LigerQwen2VLMRopeFunction.apply(q, k, cos, sin, mrope_section, unsqueeze_dim)
@@ -175,3 +197,4 @@ def liger_rope(q, k, cos, sin, position_ids=None, unsqueeze_dim=1):
 
 def liger_swiglu(a, b):
     return LigerSiLUMulFunction.apply(a, b)
+
